@@ -19,7 +19,7 @@ export default function Question(props) {
     }, [])
 
     function selectAnswer(id, isCorrect) {
-        props.handleSelectAnswer(isCorrect)
+        props.handleSelectAnswer(props.id, isCorrect)
         setAnswers(answers => answers.map(ans => {
             return ans.id == id ? 
                 {...ans, isSelected: true} :

@@ -20,6 +20,17 @@ export default function QuizPage(props) {
                 }
             ))))
     }, [])
+
+    useEffect(() => {
+        let fill = 0
+        let correct = 0
+        questions.map(q => {
+            fill = fill + (q.hasSelectedAnswer ? 1 : 0)
+            correct = correct + (q.hasCorrectAnswer ? 1 : 0)
+        })
+        setFillCount(fill)
+        setCorrectCount(correct)
+    }, [questions])
     
     const questionElements = questions.map(q => (
         <Question 
@@ -35,10 +46,14 @@ export default function QuizPage(props) {
         />
     ))
 
-    function selectAnswer(isCorrect) {
-        setQuestions(questions.map(q => ({...q, hasSelectedAnswer:true, hasCorrectAnswer:isCorrect})))
-        setCorrectCount(prevCount => prevCount + (isCorrect ? 1 : 0))
-        setFillCount(prevCount => prevCount + 1)
+    function selectAnswer(questionId, isCorrect) {
+        setQuestions(questions.map(q => {
+            if (questionId === q.id) {
+                return {...q, hasSelectedAnswer: true, hasCorrectAnswer: isCorrect}
+            } else {
+                return q
+            }
+        }))
     }
   
     function checkAnswers() {
